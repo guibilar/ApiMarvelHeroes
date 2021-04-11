@@ -1,4 +1,6 @@
-﻿using MarvelHeroes.Business.Models;
+﻿using MarvelHeroes.Business.Intefaces;
+using MarvelHeroes.Business.Models;
+using MarvelHeroes.Business.Notificacoes;
 using MarvelHeroes.Integração.Interfaces;
 using Newtonsoft.Json;
 using System;
@@ -12,18 +14,19 @@ namespace MarvelHeroes.Integração.Helpers
 {
     public class MarvelClient : IMarvelClient
     {
-        public HttpClient _client { get; set; }
-        public string _chavePublica { get; set; }
-        public string _chavePrivada { get; set; }
+        private HttpClient _client { get; set; }
+        private string _chavePublica { get; } = Environment.GetEnvironmentVariable("publicKey");
+        private string _chavePrivada { get; } = Environment.GetEnvironmentVariable("privateKey");
 
-        public MarvelClient()
+        private readonly INotificador _notificador;
+
+        public MarvelClient(INotificador notificador)
         {
             _client = new HttpClient();
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _client.BaseAddress = new Uri(Environment.GetEnvironmentVariable("marvelApiUrl"));
-            _chavePrivada = Environment.GetEnvironmentVariable("privateKey");
-            _chavePublica = Environment.GetEnvironmentVariable("publicKey");
+            _notificador = notificador;
         }
 
         private string CalculaHash(string carimboDeTempo)
@@ -44,6 +47,8 @@ namespace MarvelHeroes.Integração.Helpers
 
             object resultado = JsonConvert.DeserializeObject(conteudo);
 
+            VerificaException(resultado);
+
             return resultado;
         }
 
@@ -56,7 +61,31 @@ namespace MarvelHeroes.Integração.Helpers
 
             object resultado = JsonConvert.DeserializeObject(conteudo);
 
+            VerificaException(resultado);
+
             return resultado;
+        }
+
+        private void VerificaException(dynamic resultado)
+        {
+            switch ((int)resultado.code)
+            {
+                case 404:
+                    {
+                        _notificador.Resolver(new Notificacao(tipo: "Aviso", mensagem: "Objeto não encontrado"));
+                        break;
+                    }
+                case 401:
+                    {
+                        _notificador.Resolver(new Notificacao(tipo: "Aviso", mensagem: "Suas credenciais Marvel não são válidas"));
+                        break;
+                    }
+                case 500:
+                    {
+                        _notificador.Resolver(new Notificacao(tipo: "Erro", mensagem: "Um erro de integração ocorreu"));
+                        break;
+                    }
+            }
         }
     }
 }
