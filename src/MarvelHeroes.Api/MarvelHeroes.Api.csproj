@@ -28,7 +28,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MarvelHeroes.Business\MarvelHeroes.Business.csproj" />
     <ProjectReference Include="..\MarvelHeroes.Data\MarvelHeroes.Data.csproj" />
-    <ProjectReference Include="..\MarvelHeroes.Integração\MarvelHeroes.Integração.csproj" />
+    <ProjectReference Include="..\MarvelHeroes.Integracao\MarvelHeroes.Integracao.csproj" />
   </ItemGroup>
 
 </Project>

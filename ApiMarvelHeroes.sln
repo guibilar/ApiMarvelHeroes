@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarvelHeroes.Business", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarvelHeroes.Data", "src\MarvelHeroes.Data\MarvelHeroes.Data.csproj", "{58082198-5413-427E-A196-E550032EF624}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarvelHeroes.Integração", "src\MarvelHeroes.Integração\MarvelHeroes.Integração.csproj", "{A479D075-81F1-4049-B0E8-9B7D2371E795}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarvelHeroes.Integracao", "src\MarvelHeroes.Integracao\MarvelHeroes.Integracao.csproj", "{F073C70D-03BA-452D-8CFE-D812D1EFD41E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{58082198-5413-427E-A196-E550032EF624}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58082198-5413-427E-A196-E550032EF624}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58082198-5413-427E-A196-E550032EF624}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A479D075-81F1-4049-B0E8-9B7D2371E795}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A479D075-81F1-4049-B0E8-9B7D2371E795}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A479D075-81F1-4049-B0E8-9B7D2371E795}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A479D075-81F1-4049-B0E8-9B7D2371E795}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F073C70D-03BA-452D-8CFE-D812D1EFD41E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F073C70D-03BA-452D-8CFE-D812D1EFD41E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F073C70D-03BA-452D-8CFE-D812D1EFD41E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F073C70D-03BA-452D-8CFE-D812D1EFD41E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
