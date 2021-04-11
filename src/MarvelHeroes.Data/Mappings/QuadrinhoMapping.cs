@@ -9,7 +9,11 @@ namespace MarvelHeroes.Data.Mappings
         public void Configure(EntityTypeBuilder<Quadrinho> builder)
         {
             builder.HasKey(c => c.Id);
-            builder.Property(c => c.Id_marvel)
+
+            builder.HasIndex(p => p.Guid)
+                   .IsUnique();
+
+            builder.Property(c => c.IdMarvel)
                 .IsRequired();
 
             builder.Property(c => c.Titulo)
@@ -23,10 +27,10 @@ namespace MarvelHeroes.Data.Mappings
                 .HasColumnType("TEXT")
                 .HasMaxLength(int.MaxValue);
 
-            builder.Property(c => c.Pic_url)
+            builder.Property(c => c.LinkImagem)
                 .HasMaxLength(300);
 
-            builder.Property(c => c.Wiki_url)
+            builder.Property(c => c.LinkWiki)
                 .HasMaxLength(300);
 
             builder.ToTable("quadrinhos");

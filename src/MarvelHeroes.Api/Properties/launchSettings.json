@@ -1,4 +1,4 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -14,7 +14,10 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "privateKey": "c109c5ae5fe25f81bc149b4cf7a2407678d5dc40",
+        "marvelApiUrl": "https://gateway.marvel.com:443/v1/public/",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "publicKey": "3dac5671135fab935c77add36e46abb6"
       }
     },
     "IIS - Staging": {

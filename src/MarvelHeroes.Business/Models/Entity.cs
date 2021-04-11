@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MarvelHeroes.Business.Models
 {
@@ -10,6 +11,8 @@ namespace MarvelHeroes.Business.Models
         }
 
         public Guid Guid { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
     }

@@ -59,9 +59,10 @@ namespace MarvelHeroes.Data.Repository
             await SaveChanges();
         }
 
-        public virtual async Task RemoverPorGuid(Guid id)
+        public virtual async Task RemoverPorGuid(Guid guid)
         {
-            DbSet.Remove(new TEntity { Guid = id });
+            var entity = await ObterPorGuid(guid);
+            DbSet.Remove(entity);
             await SaveChanges();
         }
 

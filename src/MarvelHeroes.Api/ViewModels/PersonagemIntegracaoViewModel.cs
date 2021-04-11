@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
-namespace MarvelHeroes.Business.Models
+namespace MarvelHeroes.Api.ViewModels
 {
-    public class Personagem : Entity
+    public class PersonagemIntegracaoViewModel
     {
-        //ID no BD API Marvel
         public int IdMarvel { get; set; }
         //Nome do personagem
         public string Nome { get; set; }

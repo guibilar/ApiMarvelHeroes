@@ -4,14 +4,16 @@ using MarvelHeroes.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MarvelHeroes.Data.Migrations
 {
     [DbContext(typeof(MeuDbContext))]
-    partial class MeuDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210411144953_config-auto")]
+    partial class configauto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,9 +53,6 @@ namespace MarvelHeroes.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Guid")
-                        .IsUnique();
-
                     b.ToTable("personagem");
                 });
 
@@ -71,14 +70,10 @@ namespace MarvelHeroes.Data.Migrations
                     b.Property<Guid>("Guid")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("IdMarvel")
+                    b.Property<int>("Id_marvel")
                         .HasColumnType("int");
 
-                    b.Property<string>("LinkImagem")
-                        .HasMaxLength(300)
-                        .HasColumnType("varchar(300)");
-
-                    b.Property<string>("LinkWiki")
+                    b.Property<string>("Pic_url")
                         .HasMaxLength(300)
                         .HasColumnType("varchar(300)");
 
@@ -90,10 +85,11 @@ namespace MarvelHeroes.Data.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("varchar(300)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("Wiki_url")
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)");
 
-                    b.HasIndex("Guid")
-                        .IsUnique();
+                    b.HasKey("Id");
 
                     b.ToTable("quadrinhos");
                 });

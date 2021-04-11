@@ -9,6 +9,7 @@ namespace MarvelHeroes.Api.Configuration
         public AutomapperConfig()
         {
             CreateMap<Personagem, PersonagemViewModel>().ReverseMap();
+            CreateMap<Personagem, PersonagemIntegracaoViewModel>().ReverseMap();
             CreateMap<Quadrinho, QuadrinhoViewModel>().ReverseMap();
         }
     }

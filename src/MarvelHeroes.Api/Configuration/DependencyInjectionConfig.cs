@@ -4,6 +4,9 @@ using MarvelHeroes.Business.Notificacoes;
 using MarvelHeroes.Business.Services;
 using MarvelHeroes.Data.Context;
 using MarvelHeroes.Data.Repository;
+using MarvelHeroes.Integração.Helpers;
+using MarvelHeroes.Integração.Interfaces;
+using MarvelHeroes.Integração.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -18,6 +21,8 @@ namespace MarvelHeroes.Api.Configuration
             services.AddScoped<MeuDbContext>();
             services.AddScoped<IQuadrinhoRepository, QuadrinhoRepository>();
             services.AddScoped<IPersonagemRepository, PersonagemRepository>();
+            services.AddScoped<IMarvelClient, MarvelClient>();
+            services.AddScoped<IPersonagemIntegracaoRepository, PersonagemIntegracaoRepository>();
 
             services.AddScoped<INotificador, Notificador>();
 
