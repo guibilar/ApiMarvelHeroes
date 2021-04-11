@@ -1,10 +1,8 @@
 ﻿using MarvelHeroes.Business.Intefaces;
-using MarvelHeroes.Business.Models;
 using MarvelHeroes.Business.Notificacoes;
 using MarvelHeroes.Integração.Interfaces;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;

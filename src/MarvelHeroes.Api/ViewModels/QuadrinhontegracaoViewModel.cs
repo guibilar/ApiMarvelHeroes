@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace MarvelHeroes.Api.ViewModels
+﻿namespace MarvelHeroes.Api.ViewModels
 {
     public class QuadrinhontegracaoViewModel
     {
