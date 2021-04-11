@@ -18,17 +18,20 @@ namespace MarvelHeroes.Api.V1.Controllers
     public class PersonagemController : MainController
     {
         private readonly IPersonagemRepository _personagemRepository;
-        private readonly IPersonagemIntegracaoRepository _integracaoMarvel;
+        private readonly IPersonagemIntegracaoRepository _integracaoPersonagemMarvel;
+        private readonly IQuadrinhoIntegracaoRepository _integracaoQuadrinhoMarvel;
         private readonly IMapper _mapper;
 
         public PersonagemController(IPersonagemRepository personagemRepository,
-                                      IPersonagemIntegracaoRepository integracaoMarvel,
+                                      IPersonagemIntegracaoRepository integracaoPersonagemMarvel,
+                                      IQuadrinhoIntegracaoRepository integracaoQuadrinhoMarvel,
                                       IMapper mapper, 
                                       INotificador notificador, 
                                       IUser user) : base(notificador, user)
         {
             _personagemRepository = personagemRepository;
-            _integracaoMarvel = integracaoMarvel;
+            _integracaoPersonagemMarvel = integracaoPersonagemMarvel;
+            _integracaoQuadrinhoMarvel = integracaoQuadrinhoMarvel;
             _mapper = mapper;
         }
 
@@ -42,16 +45,25 @@ namespace MarvelHeroes.Api.V1.Controllers
         [Route("integracao/&limite={limite:int}&offset={offset:int}")]
         public dynamic ListarViaIntegração(int limite, int offset)
         {
-            var resultado =  _integracaoMarvel.ListaPersonagens(limite, offset);
+            var resultado =  _integracaoPersonagemMarvel.ListaPersonagens(limite, offset);
             resultado.lista = _mapper.Map<List<PersonagemIntegracaoViewModel>>(resultado.lista);
             return CustomResponse(resultado);
         }
 
         [HttpGet]
         [Route("integracao/{idMarvel:int}")]
-        public dynamic ObterViaIntegração(int idMarvel)
+        public dynamic ObterPersonagemViaIntegração(int idMarvel)
         {
-            return CustomResponse(_mapper.Map<PersonagemIntegracaoViewModel>(_integracaoMarvel.ObterPersonagem(idMarvel)));
+            return CustomResponse(_mapper.Map<PersonagemIntegracaoViewModel>(_integracaoPersonagemMarvel.ObterPersonagem(idMarvel)));
+        }
+
+        [HttpGet]
+        [Route("integracao/{idMarvel:int}/comics/&limite={limite:int}&offset={offset:int}")]
+        public dynamic ObterComicsDoPersonagemViaIntegração(int idMarvel, int limite, int offset)
+        {
+            var resultado = _integracaoQuadrinhoMarvel.ListaQuadrinhosDePersonagem(idMarvel, limite, offset);
+            resultado.lista = _mapper.Map<List<QuadrinhontegracaoViewModel>>(resultado.lista);
+            return CustomResponse(resultado);
         }
 
         [HttpGet("{guid:guid}")]

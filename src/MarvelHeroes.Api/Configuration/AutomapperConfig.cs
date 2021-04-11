@@ -11,6 +11,7 @@ namespace MarvelHeroes.Api.Configuration
             CreateMap<Personagem, PersonagemViewModel>().ReverseMap();
             CreateMap<Personagem, PersonagemIntegracaoViewModel>().ReverseMap();
             CreateMap<Quadrinho, QuadrinhoViewModel>().ReverseMap();
+            CreateMap<Quadrinho, QuadrinhontegracaoViewModel>().ReverseMap();
         }
     }
 }

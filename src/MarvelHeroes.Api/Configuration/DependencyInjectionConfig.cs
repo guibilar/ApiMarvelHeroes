@@ -23,6 +23,7 @@ namespace MarvelHeroes.Api.Configuration
             services.AddScoped<IPersonagemRepository, PersonagemRepository>();
             services.AddScoped<IMarvelClient, MarvelClient>();
             services.AddScoped<IPersonagemIntegracaoRepository, PersonagemIntegracaoRepository>();
+            services.AddScoped<IQuadrinhoIntegracaoRepository, QuadrinhoIntegracaoRepository>();
 
             services.AddScoped<INotificador, Notificador>();
 
