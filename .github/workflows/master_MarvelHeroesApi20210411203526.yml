@@ -19,7 +19,7 @@ jobs:
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '5.0.x'
+        dotnet-version: '3.1.301'
 
     - name: Build with dotnet
       run: dotnet build --configuration Release
@@ -52,5 +52,5 @@ jobs:
       with:
         app-name: 'MarvelHeroesApi20210411203526'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_baf789ed131c41dbb2dd367141ec9e18 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_e29463f1e86841bca9621818e11f6a73 }}
         package: .
