@@ -58,7 +58,7 @@ namespace MarvelHeroes.Api.V1.Controllers
         }
 
         [HttpGet]
-        [Route("integracao/{idMarvel:int}/comics/&limite={limite:int}&offset={offset:int}")]
+        [Route("integracao/{idMarvel:int}/quadrinhos/&limite={limite:int}&offset={offset:int}")]
         public dynamic ObterComicsDoPersonagemViaIntegração(int idMarvel, int limite, int offset)
         {
             var resultado = _integracaoQuadrinhoMarvel.ListaQuadrinhosDePersonagem(idMarvel, limite, offset);
