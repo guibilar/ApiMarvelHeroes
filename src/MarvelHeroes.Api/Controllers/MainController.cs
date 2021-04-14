@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
+using MarvelHeroes.Api.ViewModels;
 using MarvelHeroes.Business.Intefaces;
 using MarvelHeroes.Business.Models.Enums;
 using MarvelHeroes.Business.Notificacoes;
@@ -12,15 +15,17 @@ namespace MarvelHeroes.Api.Controllers
     public abstract class MainController : ControllerBase
     {
         private readonly INotificador _notificador;
+        private readonly IMapper _mapper;
         public readonly IUser AppUser;
 
         protected Guid UsuarioId { get; set; }
         protected bool UsuarioAutenticado { get; set; }
 
         protected MainController(INotificador notificador, 
-                                 IUser appUser)
+                                 IUser appUser, IMapper mapper)
         {
             _notificador = notificador;
+            _mapper = mapper;
             AppUser = appUser;
 
             if (appUser.IsAuthenticated())
@@ -55,7 +60,7 @@ namespace MarvelHeroes.Api.Controllers
                     codigo_http = http_code,
                     sucesso = false,
                     hora_retorno = DateTime.Now,
-                    notificacoes = _notificador.ObterNotificacoes()
+                    notificacoes = _mapper.Map<List<NotificacaoViewModel>>(_notificador.ObterNotificacoes())
                 });
             }
 
@@ -64,7 +69,7 @@ namespace MarvelHeroes.Api.Controllers
                 codigo_http = http_code,
                 sucesso = false,
                 hora_retorno = DateTime.Now,
-                notificacoes = _notificador.ObterNotificacoes()
+                notificacoes = _mapper.Map<List<NotificacaoViewModel>>(_notificador.ObterNotificacoes())
             });
         }
 
