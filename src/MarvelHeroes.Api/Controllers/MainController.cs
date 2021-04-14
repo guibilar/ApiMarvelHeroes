@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using MarvelHeroes.Business.Intefaces;
+using MarvelHeroes.Business.Models.Enums;
 using MarvelHeroes.Business.Notificacoes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -79,23 +80,14 @@ namespace MarvelHeroes.Api.Controllers
             foreach (var erro in erros)
             {
                 var errorMsg = erro.Exception == null ? erro.ErrorMessage : erro.Exception.Message;
-                NotificarErro(errorMsg);
+                Notificar(TipoNotificacao.Erro, errorMsg);
             }
         }
 
-        protected void NotificarErro(string mensagem)
+        protected void Notificar(TipoNotificacao tipo, string mensagem)
         {
-            _notificador.Resolver(new Notificacao("Erro", mensagem));
+            _notificador.Resolver(new Notificacao(tipo, mensagem));
         }
 
-        protected void NotificarAviso(string mensagem)
-        {
-            _notificador.Resolver(new Notificacao("Aviso", mensagem));
-        }
-
-        protected void NotificarInformacao(string mensagem)
-        {
-            _notificador.Resolver(new Notificacao("Info", mensagem));
-        }
     }
 }

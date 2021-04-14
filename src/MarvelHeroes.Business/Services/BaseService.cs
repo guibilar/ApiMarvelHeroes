@@ -3,6 +3,7 @@ using MarvelHeroes.Business.Models;
 using MarvelHeroes.Business.Notificacoes;
 using FluentValidation;
 using FluentValidation.Results;
+using MarvelHeroes.Business.Models.Enums;
 
 namespace MarvelHeroes.Business.Services
 {
@@ -19,11 +20,11 @@ namespace MarvelHeroes.Business.Services
         {
             foreach (var error in validationResult.Errors)
             {
-                Notificar("Erro", error.ErrorMessage);
+                Notificar(TipoNotificacao.Erro, error.ErrorMessage);
             }
         }
 
-        protected void Notificar(string tipo, string mensagem)
+        protected void Notificar(TipoNotificacao tipo, string mensagem)
         {
             _notificador.Resolver(new Notificacao(tipo, mensagem));
         }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MarvelHeroes.Business.Intefaces;
+using MarvelHeroes.Business.Models.Enums;
 
 namespace MarvelHeroes.Business.Notificacoes
 {
@@ -25,7 +26,7 @@ namespace MarvelHeroes.Business.Notificacoes
 
         public bool TemNotificacao()
         {
-            return _notificacoes.Any(c => c.Tipo == "Error" || c.Tipo == "Aviso");
+            return _notificacoes.Any(c => c.Tipo == TipoNotificacao.Erro || c.Tipo == TipoNotificacao.Aviso);
         }
     }
 }

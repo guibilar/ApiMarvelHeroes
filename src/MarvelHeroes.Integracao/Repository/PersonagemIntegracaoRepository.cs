@@ -1,5 +1,6 @@
 ﻿using MarvelHeroes.Business.Intefaces;
 using MarvelHeroes.Business.Models;
+using MarvelHeroes.Business.Models.Enums;
 using MarvelHeroes.Business.Notificacoes;
 using MarvelHeroes.Integração.Interfaces;
 using System;
@@ -50,7 +51,7 @@ namespace MarvelHeroes.Integração.Repository
             }
             catch
             {
-                _notificador.Resolver(new Notificacao(tipo: "Erro", mensagem: "Um erro de integração ocorreu"));
+                _notificador.Resolver(new Notificacao(tipo: TipoNotificacao.Erro, mensagem: "Um erro de integração ocorreu"));
             }
 
             return resultado;
@@ -71,7 +72,7 @@ namespace MarvelHeroes.Integração.Repository
             }
             catch
             {
-                _notificador.Resolver(new Notificacao(tipo: "Erro", mensagem: "Um erro de integração ocorreu"));
+                _notificador.Resolver(new Notificacao(tipo: TipoNotificacao.Erro, mensagem: "Um erro de integração ocorreu"));
             }
 
             return personagem;

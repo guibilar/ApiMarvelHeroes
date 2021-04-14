@@ -6,6 +6,7 @@ using MarvelHeroes.Api.Controllers;
 using MarvelHeroes.Api.ViewModels;
 using MarvelHeroes.Business.Intefaces;
 using MarvelHeroes.Business.Models;
+using MarvelHeroes.Business.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,7 +41,7 @@ namespace MarvelHeroes.Api.V1.Controllers
             var quadrinhoViewModel = await ObterQuadrinhoPorGuid(guid);
 
             if (quadrinhoViewModel == null) {
-                NotificarAviso("Não foi possivel localizar o quadrinho informado");
+                Notificar(TipoNotificacao.Aviso, "Não foi possivel localizar o quadrinho informado");
                 return CustomResponse(null, 404);
             } 
 
@@ -62,7 +63,7 @@ namespace MarvelHeroes.Api.V1.Controllers
         {
             if (guid != quadrinhoViewModel.Guid)
             {
-                NotificarAviso("O id informado não é o mesmo que foi passado na query");
+                Notificar(TipoNotificacao.Aviso, "O id informado não é o mesmo que foi passado na query");
                 return CustomResponse(quadrinhoViewModel);
             }
 

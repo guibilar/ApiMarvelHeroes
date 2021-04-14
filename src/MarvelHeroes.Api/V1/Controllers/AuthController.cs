@@ -8,6 +8,7 @@ using MarvelHeroes.Api.Controllers;
 using MarvelHeroes.Api.Extensions;
 using MarvelHeroes.Api.ViewModels;
 using MarvelHeroes.Business.Intefaces;
+using MarvelHeroes.Business.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -57,7 +58,7 @@ namespace DevIO.Api.V1.Controllers
             }
             foreach (var error in result.Errors)
             {
-                NotificarErro(error.Description);
+                Notificar(TipoNotificacao.Erro, error.Description);
             }
 
             return CustomResponse(registerUser);
@@ -77,11 +78,11 @@ namespace DevIO.Api.V1.Controllers
             }
             if (result.IsLockedOut)
             {
-                NotificarErro("Usuário temporariamente bloqueado por tentativas inválidas");
+                Notificar(TipoNotificacao.Aviso, "Usuário temporariamente bloqueado por tentativas inválidas");
                 return CustomResponse(loginUser);
             }
 
-            NotificarErro("Usuário ou Senha incorretos");
+            Notificar(TipoNotificacao.Info, "Usuário ou Senha incorretos");
             return CustomResponse(loginUser);
         }
 

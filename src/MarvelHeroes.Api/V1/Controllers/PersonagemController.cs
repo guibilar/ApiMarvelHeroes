@@ -6,6 +6,7 @@ using MarvelHeroes.Api.Controllers;
 using MarvelHeroes.Api.ViewModels;
 using MarvelHeroes.Business.Intefaces;
 using MarvelHeroes.Business.Models;
+using MarvelHeroes.Business.Models.Enums;
 using MarvelHeroes.Integração.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -72,7 +73,7 @@ namespace MarvelHeroes.Api.V1.Controllers
             var fornecedor = await ObterPersonagemPorGuid(guid);
 
             if (fornecedor == null) {
-                NotificarAviso("Não foi possivel localizar o personagem informado");
+                Notificar(TipoNotificacao.Aviso, "Não foi possivel localizar o personagem informado");
                 return CustomResponse(null, 404);
             } 
 
@@ -94,7 +95,7 @@ namespace MarvelHeroes.Api.V1.Controllers
         {
             if (guid != personagemViewModel.Guid)
             {
-                NotificarAviso("O id informado não é o mesmo que foi passado na query");
+                Notificar(TipoNotificacao.Aviso, "O id informado não é o mesmo que foi passado na query");
                 return CustomResponse(personagemViewModel);
             }
 
@@ -117,7 +118,7 @@ namespace MarvelHeroes.Api.V1.Controllers
 
             if (personagemViewModel == null)
             {
-                NotificarAviso("Não foi possivel localizar o personagem informado");
+                Notificar(TipoNotificacao.Aviso, "Não foi possivel localizar o personagem informado");
                 return CustomResponse(null, 404);
             }
 

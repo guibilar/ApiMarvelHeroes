@@ -1,4 +1,5 @@
 ﻿using MarvelHeroes.Business.Intefaces;
+using MarvelHeroes.Business.Models.Enums;
 using MarvelHeroes.Business.Notificacoes;
 using MarvelHeroes.Integração.Interfaces;
 using Newtonsoft.Json;
@@ -70,17 +71,17 @@ namespace MarvelHeroes.Integração.Helpers
             {
                 case 404:
                     {
-                        _notificador.Resolver(new Notificacao(tipo: "Aviso", mensagem: "Objeto não encontrado"));
+                        _notificador.Resolver(new Notificacao(tipo: TipoNotificacao.Aviso, mensagem: "Objeto não encontrado"));
                         break;
                     }
                 case 401:
                     {
-                        _notificador.Resolver(new Notificacao(tipo: "Aviso", mensagem: "Suas credenciais Marvel não são válidas"));
+                        _notificador.Resolver(new Notificacao(tipo: TipoNotificacao.Aviso, mensagem: "Suas credenciais Marvel não são válidas"));
                         break;
                     }
                 case 500:
                     {
-                        _notificador.Resolver(new Notificacao(tipo: "Erro", mensagem: "Um erro de integração ocorreu"));
+                        _notificador.Resolver(new Notificacao(tipo: TipoNotificacao.Erro, mensagem: "Um erro de integração ocorreu"));
                         break;
                     }
             }

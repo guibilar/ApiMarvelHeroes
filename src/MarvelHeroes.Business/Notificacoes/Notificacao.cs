@@ -1,14 +1,19 @@
-﻿namespace MarvelHeroes.Business.Notificacoes
+﻿using MarvelHeroes.Business.Models.Enums;
+
+namespace MarvelHeroes.Business.Notificacoes
 {
     public class Notificacao
     {
-        public Notificacao(string tipo, string mensagem)
+        public Notificacao(TipoNotificacao tipo, string mensagem)
         {
             Tipo = tipo;
+            TipoTexto = tipo.ToString();
             Mensagem = mensagem;
         }
 
-        public string Tipo { get; }
+        public TipoNotificacao Tipo { get; }
+
+        public string TipoTexto { get; set; }
 
         public string Mensagem { get; }
     }
