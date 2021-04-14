@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MarvelHeroes.Api.V1.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/quadrinho")]
     public class QuadrinhoController : MainController

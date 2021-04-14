@@ -13,8 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MarvelHeroes.Api.V1.Controllers
 {
-    [AllowAnonymous]
     [ApiVersion("1.0")]
+    [Authorize]
     [Route("api/v{version:apiVersion}/personagem")]
     public class PersonagemController : MainController
     {
@@ -43,6 +43,7 @@ namespace MarvelHeroes.Api.V1.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("integracao/&limite={limite:int}&offset={offset:int}")]
         public dynamic ListarViaIntegração(int limite, int offset)
         {
@@ -52,6 +53,7 @@ namespace MarvelHeroes.Api.V1.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("integracao/{idMarvel:int}")]
         public dynamic ObterPersonagemViaIntegração(int idMarvel)
         {
@@ -59,6 +61,7 @@ namespace MarvelHeroes.Api.V1.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("integracao/{idMarvel:int}/quadrinhos/&limite={limite:int}&offset={offset:int}")]
         public dynamic ObterComicsDoPersonagemViaIntegração(int idMarvel, int limite, int offset)
         {
