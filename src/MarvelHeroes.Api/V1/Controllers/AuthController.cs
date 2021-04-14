@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using MarvelHeroes.Api.Controllers;
 using MarvelHeroes.Api.Extensions;
 using MarvelHeroes.Api.ViewModels;
@@ -25,12 +26,13 @@ namespace DevIO.Api.V1.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly AppSettings _appSettings;
         private readonly ILogger _logger;
+        private readonly IMapper mapper;
 
         public AuthController(INotificador notificador, 
                               SignInManager<IdentityUser> signInManager, 
                               UserManager<IdentityUser> userManager, 
                               IOptions<AppSettings> appSettings,
-                              IUser user, ILogger<AuthController> logger) : base(notificador, user)
+                              IUser user, ILogger<AuthController> logger, IMapper mapper) : base(notificador, user, mapper)
         {
             _signInManager = signInManager;
             _userManager = userManager;

@@ -28,7 +28,7 @@ namespace MarvelHeroes.Api.V1.Controllers
                                       IQuadrinhoIntegracaoRepository integracaoQuadrinhoMarvel,
                                       IMapper mapper, 
                                       INotificador notificador, 
-                                      IUser user) : base(notificador, user)
+                                      IUser user) : base(notificador, user, mapper)
         {
             _personagemRepository = personagemRepository;
             _integracaoPersonagemMarvel = integracaoPersonagemMarvel;

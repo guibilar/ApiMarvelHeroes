@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MarvelHeroes.Api.ViewModels;
 using MarvelHeroes.Business.Models;
+using MarvelHeroes.Business.Notificacoes;
 
 namespace MarvelHeroes.Api.Configuration
 {
@@ -12,6 +13,7 @@ namespace MarvelHeroes.Api.Configuration
             CreateMap<Personagem, PersonagemIntegracaoViewModel>().ReverseMap();
             CreateMap<Quadrinho, QuadrinhoViewModel>().ReverseMap();
             CreateMap<Quadrinho, QuadrinhontegracaoViewModel>().ReverseMap();
+            CreateMap<Notificacao, NotificacaoViewModel>();
         }
     }
 }

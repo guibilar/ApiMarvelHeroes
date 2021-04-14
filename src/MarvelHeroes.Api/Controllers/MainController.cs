@@ -53,7 +53,7 @@ namespace MarvelHeroes.Api.Controllers
                 });
             }
 
-            if(http_code == 404)
+            if (http_code == 404)
             {
                 return NotFound(new
                 {

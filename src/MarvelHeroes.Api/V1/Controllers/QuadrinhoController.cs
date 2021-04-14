@@ -23,7 +23,7 @@ namespace MarvelHeroes.Api.V1.Controllers
         public QuadrinhoController(IQuadrinhoRepository quadrinhoRepository, 
                                       IMapper mapper, 
                                       INotificador notificador, 
-                                      IUser user) : base(notificador, user)
+                                      IUser user) : base(notificador, user, mapper)
         {
             _quadrinhoRepository = quadrinhoRepository;
             _mapper = mapper;

@@ -9,6 +9,6 @@ namespace MarvelHeroes.Api.ViewModels
     {
         public string TipoTexto { get; set; }
 
-        public string Mensagem { get; }
+        public string Mensagem { get; set; }
     }
 }
