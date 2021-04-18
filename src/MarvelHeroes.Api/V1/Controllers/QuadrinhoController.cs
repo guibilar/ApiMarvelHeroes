@@ -29,12 +29,21 @@ namespace MarvelHeroes.Api.V1.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Obtém todos os quadrinhos cadastrados no banco de dados da aplicação
+        /// </summary>
+        /// <returns>Lista de quadrinhos cadastrados</returns>
         [HttpGet]
         public async Task<IEnumerable<QuadrinhoViewModel>> ObterTodos()
         {
             return _mapper.Map<IEnumerable<QuadrinhoViewModel>>(await _quadrinhoRepository.ObterTodos());
         }
 
+        /// <summary>
+        /// Obtém um quadrinho cadastrado no banco de dados da aplicação por Id
+        /// </summary>
+        /// <param name="guid">Id do quadrinho cadastrado</param>
+        /// <returns>Um único quadrinho Marvel</returns>
         [HttpGet("{guid:guid}")]
         public async Task<ActionResult<QuadrinhoViewModel>> ObterPorId(Guid guid)
         {
@@ -48,6 +57,11 @@ namespace MarvelHeroes.Api.V1.Controllers
             return quadrinhoViewModel;
         }
 
+        /// <summary>
+        /// Salva um quadrinho no banco de dados da aplicação 
+        /// </summary>
+        /// <param name="quadrinhoViewModel">Quadrinho a ser salvo</param>
+        /// <returns>Quadrinho salvo</returns>
         [HttpPost]
         public async Task<ActionResult<QuadrinhoViewModel>> Adicionar(QuadrinhoViewModel quadrinhoViewModel)
         {
@@ -58,6 +72,12 @@ namespace MarvelHeroes.Api.V1.Controllers
             return CustomResponse(quadrinhoViewModel);
         }
 
+        /// <summary>
+        /// Atualiza um quadrinho salvo no banco de dados
+        /// </summary>
+        /// <param name="guid">Id do quadrinho a ser atualizado</param>
+        /// <param name="quadrinhoViewModel">Quadrinho a ser atualizado</param>
+        /// <returns>Quadrinho atualizado</returns>
         [HttpPut("{guid:guid}")]
         public async Task<ActionResult<QuadrinhoViewModel>> Atualizar(Guid guid, QuadrinhoViewModel quadrinhoViewModel)
         {
@@ -74,6 +94,11 @@ namespace MarvelHeroes.Api.V1.Controllers
             return CustomResponse(quadrinhoViewModel);
         }
 
+        /// <summary>
+        /// Excluí um quadrinho do banco de dados da aplicação
+        /// </summary>
+        /// <param name="guid">Id do quadrinho a ser excluído</param>
+        /// <returns>Quadrinho excluído</returns>
         [HttpDelete("{guid:guid}")]
         public async Task<ActionResult<QuadrinhoViewModel>> Excluir(Guid guid)
         {
