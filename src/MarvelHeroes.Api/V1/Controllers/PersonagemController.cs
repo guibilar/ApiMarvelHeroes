@@ -18,12 +18,14 @@ namespace MarvelHeroes.Api.V1.Controllers
     [Route("api/v{version:apiVersion}/personagem")]
     public class PersonagemController : MainController
     {
+        private readonly IPersonagemService _personagemService;
         private readonly IPersonagemRepository _personagemRepository;
         private readonly IPersonagemIntegracaoRepository _integracaoPersonagemMarvel;
         private readonly IQuadrinhoIntegracaoRepository _integracaoQuadrinhoMarvel;
         private readonly IMapper _mapper;
 
-        public PersonagemController(IPersonagemRepository personagemRepository,
+        public PersonagemController(IPersonagemService personagemService,
+                                      IPersonagemRepository personagemRepository,
                                       IPersonagemIntegracaoRepository integracaoPersonagemMarvel,
                                       IQuadrinhoIntegracaoRepository integracaoQuadrinhoMarvel,
                                       IMapper mapper, 
@@ -33,6 +35,7 @@ namespace MarvelHeroes.Api.V1.Controllers
             _personagemRepository = personagemRepository;
             _integracaoPersonagemMarvel = integracaoPersonagemMarvel;
             _integracaoQuadrinhoMarvel = integracaoQuadrinhoMarvel;
+            _personagemService = personagemService;
             _mapper = mapper;
         }
 
@@ -88,7 +91,7 @@ namespace MarvelHeroes.Api.V1.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            await _personagemRepository.Adicionar(_mapper.Map<Personagem>(personagemViewModel));
+            await _personagemService.Adicionar(_mapper.Map<Personagem>(personagemViewModel));
 
             return CustomResponse(personagemViewModel);
         }
@@ -109,7 +112,7 @@ namespace MarvelHeroes.Api.V1.Controllers
             var personagemMapeado = _mapper.Map<Personagem>(personagemViewModel);
             personagemMapeado.Id = id;
 
-            await _personagemRepository.Atualizar(personagemMapeado);
+            await _personagemService.Atualizar(personagemMapeado);
 
             return CustomResponse(personagemViewModel);
         }
