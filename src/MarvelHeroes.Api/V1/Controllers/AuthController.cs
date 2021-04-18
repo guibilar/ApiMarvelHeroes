@@ -40,6 +40,11 @@ namespace DevIO.Api.V1.Controllers
             _appSettings = appSettings.Value;
         }
 
+        /// <summary>
+        /// Adciona uma nova conta ao registro de acesso a aplicação
+        /// </summary>
+        /// <param name="registerUser">Conta a ser cadastrada</param>
+        /// <returns>Conta cadastrada já autenticada</returns>
         [HttpPost("nova-conta")]
         public async Task<ActionResult> Registrar(RegisterUserViewModel registerUser)
         {
@@ -66,6 +71,11 @@ namespace DevIO.Api.V1.Controllers
             return CustomResponse(registerUser);
         }
     
+        /// <summary>
+        /// Faz a autenticação de um usuário e senha informados
+        /// </summary>
+        /// <param name="loginUser">Objeto de login e senha</param>
+        /// <returns>Conta autenticada</returns>
         [HttpPost("entrar")]
         public async Task<ActionResult> Login(LoginUserViewModel loginUser)
         {
