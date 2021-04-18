@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -18,6 +20,10 @@ namespace MarvelHeroes.Api.Configuration
         {
             services.AddSwaggerGen(c =>
             {
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+
                 c.OperationFilter<SwaggerDefaultValues>();
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -48,6 +54,7 @@ namespace MarvelHeroes.Api.Configuration
 
             return services;
         }
+
 
         public static IApplicationBuilder UseSwaggerConfig(this IApplicationBuilder app, IApiVersionDescriptionProvider provider)
         {

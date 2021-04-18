@@ -1,10 +1,7 @@
 ﻿using MarvelHeroes.Business.Intefaces;
 using MarvelHeroes.Business.Models;
 using MarvelHeroes.Business.Models.Validations;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MarvelHeroes.Business.Services

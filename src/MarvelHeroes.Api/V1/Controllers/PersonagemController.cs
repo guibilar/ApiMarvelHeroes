@@ -39,12 +39,22 @@ namespace MarvelHeroes.Api.V1.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Lista todos os personagens cadastrados no banco de dados da aplicação
+        /// </summary>
+        /// <returns>Lista de personagens cadastrados</returns>
         [HttpGet]
         public async Task<IEnumerable<PersonagemViewModel>> ObterTodos()
         {
             return _mapper.Map<IEnumerable<PersonagemViewModel>>(await _personagemRepository.ObterTodos());
         }
 
+        /// <summary>
+        /// Lista os personagens disponiveis na API pública da Marvel utilizando parametros de paginação
+        /// </summary>
+        /// <param name="limite">Quantidade de personagens a serem recuperados</param>
+        /// <param name="offset">Quantidade de personagens a serem pulados</param>
+        /// <returns>Lista de personagens</returns>
         [HttpGet]
         [AllowAnonymous]
         [Route("integracao/&limite={limite:int}&offset={offset:int}")]
@@ -55,6 +65,11 @@ namespace MarvelHeroes.Api.V1.Controllers
             return CustomResponse(resultado);
         }
 
+        /// <summary>
+        /// Obtém um único personagem na API pública da Marvel
+        /// </summary>
+        /// <param name="idMarvel">Id Marvel do personagem</param>
+        /// <returns>Um único personagem Marvel</returns>
         [HttpGet]
         [AllowAnonymous]
         [Route("integracao/{idMarvel:int}")]
@@ -63,16 +78,28 @@ namespace MarvelHeroes.Api.V1.Controllers
             return CustomResponse(_mapper.Map<PersonagemIntegracaoViewModel>(_integracaoPersonagemMarvel.ObterPersonagem(idMarvel)));
         }
 
+        /// <summary>
+        /// Lista os quadrinhos que envolvem o personagem da Marvel informado
+        /// </summary>
+        /// <param name="idMarvel">Id Marvel do personagem</param>
+        /// <param name="limite">Quantidade de quadrinhos a serem listados</param>
+        /// <param name="offset">Quantidade de quadrinhos a serem pulados</param>
+        /// <returns>Lista de quadrinhos</returns>
         [HttpGet]
         [AllowAnonymous]
         [Route("integracao/{idMarvel:int}/quadrinhos/&limite={limite:int}&offset={offset:int}")]
-        public dynamic ObterComicsDoPersonagemViaIntegração(int idMarvel, int limite, int offset)
+        public dynamic ObterQuadrinhosDoPersonagemViaIntegração(int idMarvel, int limite, int offset)
         {
             var resultado = _integracaoQuadrinhoMarvel.ListaQuadrinhosDePersonagem(idMarvel, limite, offset);
             resultado.lista = _mapper.Map<List<QuadrinhontegracaoViewModel>>(resultado.lista);
             return CustomResponse(resultado);
         }
 
+        /// <summary>
+        /// Obtém um personagem cadastrado no banco de dados da aplicação com base no Id informado
+        /// </summary>
+        /// <param name="guid">Id do personagem</param>
+        /// <returns>Personagem único cadastrado</returns>
         [HttpGet("{guid:guid}")]
         public async Task<ActionResult<PersonagemViewModel>> ObterPorId(Guid guid)
         {
@@ -86,6 +113,11 @@ namespace MarvelHeroes.Api.V1.Controllers
             return fornecedor;
         }
 
+        /// <summary>
+        /// Salva um personagem no banco de dados da aplicação
+        /// </summary>
+        /// <param name="personagemViewModel">Personagem a ser salvo</param>
+        /// <returns>Personagem salvo</returns>
         [HttpPost]
         public async Task<ActionResult<PersonagemViewModel>> Adicionar(PersonagemIntegracaoViewModel personagemViewModel)
         {
@@ -96,6 +128,12 @@ namespace MarvelHeroes.Api.V1.Controllers
             return CustomResponse(personagemViewModel);
         }
 
+        /// <summary>
+        /// Atualiza um personagem no banco de dados da aplicação
+        /// </summary>
+        /// <param name="guid">Id do personagem a ser atualizado</param>
+        /// <param name="personagemViewModel">Personagem a ser atualizado</param>
+        /// <returns>Personagem atualizado</returns>
         [HttpPut("{guid:guid}")]
         public async Task<ActionResult<PersonagemViewModel>> Atualizar(Guid guid, PersonagemViewModel personagemViewModel)
         {
@@ -117,6 +155,11 @@ namespace MarvelHeroes.Api.V1.Controllers
             return CustomResponse(personagemViewModel);
         }
 
+        /// <summary>
+        /// Excluí um personagem do banco de dados da aplicação
+        /// </summary>
+        /// <param name="guid">Id do personagem a ser excluído</param>
+        /// <returns>Personagem excluído</returns>
         [HttpDelete("{guid:guid}")]
         public async Task<ActionResult<PersonagemViewModel>> Excluir(Guid guid)
         {
