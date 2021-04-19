@@ -39,12 +39,6 @@ namespace MarvelHeroes.Business.Services
 
             if (_personagemRepository.Buscar(f => f.Id == personagem.Id && f.IdMarvel != personagem.IdMarvel).Result.Any())
             {
-                Notificar(Models.Enums.TipoNotificacao.Aviso, "Já existe um personagem cadastrado com esse IdMarvel.");
-                return false;
-            }
-
-            if(personagem.IdMarvel != personagemEmBanco.IdMarvel)
-            {
                 Notificar(Models.Enums.TipoNotificacao.Aviso, "Não é possível alterar um IdMarvel.");
                 return false;
             }
