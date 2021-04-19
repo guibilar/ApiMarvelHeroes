@@ -63,7 +63,7 @@ namespace MarvelHeroes.Api.Configuration
             }
             else
             {
-                app.UseCors("Development"); // Usar apenas nas demos => Configuração Ideal: Production
+                app.UseCors("Development");
                 app.UseHsts();
             }
 

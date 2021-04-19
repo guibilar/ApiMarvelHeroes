@@ -83,7 +83,7 @@ namespace MarvelHeroes.Api.V1.Controllers
         {
             if (guid != quadrinhoViewModel.Guid)
             {
-                Notificar(TipoNotificacao.Aviso, "O id informado não é o mesmo que foi passado na query");
+                Notificar(TipoNotificacao.Aviso, "O id informado não é o mesmo que foi passado como parâmetro");
                 return CustomResponse(quadrinhoViewModel);
             }
 
