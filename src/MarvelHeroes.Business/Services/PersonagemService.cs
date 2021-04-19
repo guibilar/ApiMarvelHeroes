@@ -32,11 +32,20 @@ namespace MarvelHeroes.Business.Services
 
         public async Task<bool> Atualizar(Personagem personagem)
         {
+            var personagemEmBanco = await _personagemRepository.ObterPorGuid(personagem.Guid);
+            personagem.Id = personagemEmBanco.Id;
+
             if (!ExecutarValidacao(new PersonagemValidation(), personagem)) return false;
 
-            if (_personagemRepository.Buscar(f => f.IdMarvel == personagem.IdMarvel && f.Id != personagem.Id).Result.Any())
+            if (_personagemRepository.Buscar(f => f.Id == personagem.Id && f.IdMarvel != personagem.IdMarvel).Result.Any())
             {
                 Notificar(Models.Enums.TipoNotificacao.Aviso, "Já existe um personagem cadastrado com esse IdMarvel.");
+                return false;
+            }
+
+            if(personagem.IdMarvel != personagemEmBanco.IdMarvel)
+            {
+                Notificar(Models.Enums.TipoNotificacao.Aviso, "Não é possível alterar um IdMarvel.");
                 return false;
             }
 

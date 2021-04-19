@@ -143,12 +143,9 @@ namespace MarvelHeroes.Api.V1.Controllers
                 return CustomResponse(personagemViewModel);
             }
 
-            var id = await ObterIdPersonagem(guid);
-
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             var personagemMapeado = _mapper.Map<Personagem>(personagemViewModel);
-            personagemMapeado.Id = id;
 
             await _personagemService.Atualizar(personagemMapeado);
 
