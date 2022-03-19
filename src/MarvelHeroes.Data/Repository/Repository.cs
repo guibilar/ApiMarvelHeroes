@@ -12,61 +12,61 @@ namespace MarvelHeroes.Data.Repository
 {
     public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity, new()
     {
-        protected readonly MeuDbContext Db;
+        protected readonly MarvelHeroesDbContext Db;
         protected readonly DbSet<TEntity> DbSet;
 
-        protected Repository(MeuDbContext db)
+        protected Repository(MarvelHeroesDbContext db)
         {
             Db = db;
             DbSet = db.Set<TEntity>();
         }
 
-        public async Task<IEnumerable<TEntity>> Buscar(Expression<Func<TEntity, bool>> predicate)
+        public async Task<IEnumerable<TEntity>> Search(Expression<Func<TEntity, bool>> predicate)
         {
             return await DbSet.AsNoTracking().Where(predicate).ToListAsync();
         }
 
-        public virtual async Task<TEntity> ObterPorId(int id)
+        public virtual async Task<TEntity> GetById(int id)
         {
             return await DbSet.FindAsync(id);
         }
 
-        public virtual async Task<TEntity> ObterPorGuid(Guid guid)
+        public virtual async Task<TEntity> GetById(Guid guid)
         {
             return await DbSet.FirstOrDefaultAsync(e => e.Guid == guid);
         }
 
-        public virtual async Task<List<TEntity>> ObterTodos()
+        public virtual async Task<List<TEntity>> GetAll()
         {
             return await DbSet.ToListAsync();
         }
 
-        public virtual async Task Adicionar(TEntity entity)
+        public virtual async Task Add(TEntity entity)
         {
             DbSet.Add(entity);
             await SaveChanges();
         }
 
-        public virtual async Task Atualizar(TEntity entity)
+        public virtual async Task Update(TEntity entity)
         {
             DbSet.Update(entity);
             await SaveChanges();
         }
 
-        public virtual async Task RemoverPorId(int id)
+        public virtual async Task RemoveById(int id)
         {
             DbSet.Remove(new TEntity { Id = id });
             await SaveChanges();
         }
 
-        public virtual async Task RemoverPorGuid(Guid guid)
+        public virtual async Task RemoveById(Guid guid)
         {
-            var entity = await ObterPorGuid(guid);
+            var entity = await GetById(guid);
             DbSet.Remove(entity);
             await SaveChanges();
         }
 
-        public virtual async Task RemoveVariosPorId(int[] ids)
+        public virtual async Task RemoveAll(int[] ids)
         {
             foreach (var id in ids)
             {
@@ -80,7 +80,7 @@ namespace MarvelHeroes.Data.Repository
             return await Db.SaveChangesAsync();
         }
 
-        public async Task SalvarVarios(IEnumerable<TEntity> objs)
+        public async Task SaveAll(IEnumerable<TEntity> objs)
         {
             Db.AddRange(objs);
             await SaveChanges();

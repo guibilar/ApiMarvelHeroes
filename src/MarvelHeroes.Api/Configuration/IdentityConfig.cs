@@ -46,8 +46,8 @@ namespace MarvelHeroes.Api.Configuration
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidAudience = appSettings.ValidoEm,
-                    ValidIssuer = appSettings.Emissor
+                    ValidAudience = appSettings.ValidIn,
+                    ValidIssuer = appSettings.Issuer
                 };
             });
 

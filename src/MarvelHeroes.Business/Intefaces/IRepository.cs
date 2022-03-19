@@ -8,16 +8,16 @@ namespace MarvelHeroes.Business.Intefaces
 {
     public interface IRepository<TEntity> : IDisposable where TEntity : Entity
     {
-        Task Adicionar(TEntity entity);
-        Task<TEntity> ObterPorId(int id);
-        Task<TEntity> ObterPorGuid(Guid guid);
-        Task<List<TEntity>> ObterTodos();
-        Task Atualizar(TEntity entity);
-        Task RemoverPorId(int id);
-        Task RemoverPorGuid(Guid guid);
-        Task<IEnumerable<TEntity>> Buscar(Expression<Func<TEntity, bool>> predicate);
+        Task Add(TEntity entity);
+        Task<TEntity> GetById(int id);
+        Task<TEntity> GetById(Guid guid);
+        Task<List<TEntity>> GetAll();
+        Task Update(TEntity entity);
+        Task RemoveById(int id);
+        Task RemoveById(Guid guid);
+        Task<IEnumerable<TEntity>> Search(Expression<Func<TEntity, bool>> predicate);
         Task<int> SaveChanges();
-        Task SalvarVarios(IEnumerable<TEntity> objs);
-        Task RemoveVariosPorId(int[] ids);
+        Task SaveAll(IEnumerable<TEntity> objs);
+        Task RemoveAll(int[] ids);
     }
 }

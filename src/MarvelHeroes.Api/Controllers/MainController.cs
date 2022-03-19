@@ -14,42 +14,42 @@ namespace MarvelHeroes.Api.Controllers
     [ApiController]
     public abstract class MainController : ControllerBase
     {
-        private readonly INotificador _notificador;
+        private readonly INotificator _notificator;
         private readonly IMapper _mapper;
         public readonly IUser AppUser;
 
-        protected Guid UsuarioId { get; set; }
-        protected bool UsuarioAutenticado { get; set; }
+        protected Guid UserId { get; set; }
+        protected bool AuthenicatedUser { get; set; }
 
-        protected MainController(INotificador notificador, 
+        protected MainController(INotificator notificator, 
                                  IUser appUser, IMapper mapper)
         {
-            _notificador = notificador;
+            _notificator = notificator;
             _mapper = mapper;
             AppUser = appUser;
 
             if (appUser.IsAuthenticated())
             {
-                UsuarioId = appUser.GetUserId();
-                UsuarioAutenticado = true;
+                UserId = appUser.GetUserId();
+                AuthenicatedUser = true;
             }
         }
 
-        protected bool OperacaoValida()
+        protected bool ValidOperation()
         {
-            return !_notificador.TemNotificacao();
+            return !_notificator.HasNotifications();
         }
 
         protected ActionResult CustomResponse(object result = null, int http_code = 400)
         {
-            if (OperacaoValida())
+            if (ValidOperation())
             {
                 return Ok(new
                 {
-                    codigo_http = 200,
-                    sucesso = true,
-                    hora_retorno = DateTime.Now,
-                    retorno = result
+                    http_code = 200,
+                    success = true,
+                    return_time = DateTime.Now,
+                    result = result
                 });
             }
 
@@ -57,41 +57,41 @@ namespace MarvelHeroes.Api.Controllers
             {
                 return NotFound(new
                 {
-                    codigo_http = http_code,
-                    sucesso = false,
-                    hora_retorno = DateTime.Now,
-                    notificacoes = _mapper.Map<List<NotificacaoViewModel>>(_notificador.ObterNotificacoes())
+                    http_code = http_code,
+                    success = false,
+                    return_time = DateTime.Now,
+                    notifications = _mapper.Map<List<NotificationViewModel>>(_notificator.GetNotifications())
                 });
             }
 
             return BadRequest(new
             {
-                codigo_http = http_code,
-                sucesso = false,
-                hora_retorno = DateTime.Now,
-                notificacoes = _mapper.Map<List<NotificacaoViewModel>>(_notificador.ObterNotificacoes())
+                http_code = http_code,
+                success = false,
+                return_time = DateTime.Now,
+                notifications = _mapper.Map<List<NotificationViewModel>>(_notificator.GetNotifications())
             });
         }
 
         protected ActionResult CustomResponse(ModelStateDictionary modelState)
         {
-            if(!modelState.IsValid) NotificarErroModelInvalida(modelState);
+            if(!modelState.IsValid) InvalidModel(modelState);
             return CustomResponse();
         }
 
-        protected void NotificarErroModelInvalida(ModelStateDictionary modelState)
+        protected void InvalidModel(ModelStateDictionary modelState)
         {
             var erros = modelState.Values.SelectMany(e => e.Errors);
             foreach (var erro in erros)
             {
                 var errorMsg = erro.Exception == null ? erro.ErrorMessage : erro.Exception.Message;
-                Notificar(TipoNotificacao.Erro, errorMsg);
+                Notificate(NotificationType.Erro, errorMsg);
             }
         }
 
-        protected void Notificar(TipoNotificacao tipo, string mensagem)
+        protected void Notificate(NotificationType type, string message)
         {
-            _notificador.Resolver(new Notificacao(tipo, mensagem));
+            _notificator.Resolve(new Notification(type, message));
         }
 
     }

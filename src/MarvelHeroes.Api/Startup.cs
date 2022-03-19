@@ -32,7 +32,7 @@ namespace ApiMarvelHeroes
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<MeuDbContext>(options =>
+            services.AddDbContext<MarvelHeroesDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });

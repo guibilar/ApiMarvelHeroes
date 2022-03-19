@@ -26,13 +26,12 @@ namespace DevIO.Api.V1.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly AppSettings _appSettings;
         private readonly ILogger _logger;
-        private readonly IMapper mapper;
 
-        public AuthController(INotificador notificador, 
+        public AuthController(INotificator notificator, 
                               SignInManager<IdentityUser> signInManager, 
                               UserManager<IdentityUser> userManager, 
                               IOptions<AppSettings> appSettings,
-                              IUser user, ILogger<AuthController> logger, IMapper mapper) : base(notificador, user, mapper)
+                              IUser user, ILogger<AuthController> logger, IMapper mapper) : base(notificator, user, mapper)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -45,8 +44,8 @@ namespace DevIO.Api.V1.Controllers
         /// </summary>
         /// <param name="registerUser">Conta a ser cadastrada</param>
         /// <returns>Conta cadastrada já autenticada</returns>
-        [HttpPost("nova-conta")]
-        public async Task<ActionResult> Registrar(RegisterUserViewModel registerUser)
+        [HttpPost("new-account")]
+        public async Task<ActionResult> Register(RegisterUserViewModel registerUser)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -61,11 +60,11 @@ namespace DevIO.Api.V1.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
-                return CustomResponse(await GerarJwt(user.Email));
+                return CustomResponse(await GenerateJwtToken(user.Email));
             }
             foreach (var error in result.Errors)
             {
-                Notificar(TipoNotificacao.Erro, error.Description);
+                Notificate(NotificationType.Erro, error.Description);
             }
 
             return CustomResponse(registerUser);
@@ -76,7 +75,7 @@ namespace DevIO.Api.V1.Controllers
         /// </summary>
         /// <param name="loginUser">Objeto de login e senha</param>
         /// <returns>Conta autenticada</returns>
-        [HttpPost("entrar")]
+        [HttpPost("login")]
         public async Task<ActionResult> Login(LoginUserViewModel loginUser)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
@@ -85,20 +84,20 @@ namespace DevIO.Api.V1.Controllers
 
             if (result.Succeeded)
             {
-                _logger.LogInformation("Usuario "+ loginUser.Email +" logado com sucesso");
-                return CustomResponse(await GerarJwt(loginUser.Email));
+                _logger.LogInformation("User "+ loginUser.Email +" has login");
+                return CustomResponse(await GenerateJwtToken(loginUser.Email));
             }
             if (result.IsLockedOut)
             {
-                Notificar(TipoNotificacao.Aviso, "Usuário temporariamente bloqueado por tentativas inválidas");
+                Notificate(NotificationType.Warning, "User is temporaly disabled");
                 return CustomResponse(loginUser);
             }
 
-            Notificar(TipoNotificacao.Info, "Usuário ou Senha incorretos");
+            Notificate(NotificationType.Info, "User or password is incorrect");
             return CustomResponse(loginUser);
         }
 
-        private async Task<LoginResponseViewModel> GerarJwt(string email)
+        private async Task<LoginResponseViewModel> GenerateJwtToken(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
             var claims = await _userManager.GetClaimsAsync(user);
@@ -121,10 +120,10 @@ namespace DevIO.Api.V1.Controllers
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
-                Issuer = _appSettings.Emissor,
-                Audience = _appSettings.ValidoEm,
+                Issuer = _appSettings.Issuer,
+                Audience = _appSettings.ValidIn,
                 Subject = identityClaims,
-                Expires = DateTime.UtcNow.AddHours(_appSettings.ExpiracaoHoras),
+                Expires = DateTime.UtcNow.AddHours(_appSettings.ExpireIn),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             });
 
@@ -133,7 +132,7 @@ namespace DevIO.Api.V1.Controllers
             var response = new LoginResponseViewModel
             {
                 AccessToken = encodedToken,
-                ExpiresIn = TimeSpan.FromHours(_appSettings.ExpiracaoHoras).TotalSeconds,
+                ExpiresIn = TimeSpan.FromHours(_appSettings.ExpireIn).TotalSeconds,
                 UserToken = new UserTokenViewModel
                 {
                     Id = user.Id,

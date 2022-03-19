@@ -18,15 +18,15 @@ namespace MarvelHeroes.Api.Configuration
     {
         public static IServiceCollection ResolveDependencies(this IServiceCollection services)
         {
-            services.AddScoped<MeuDbContext>();
-            services.AddScoped<IQuadrinhoRepository, QuadrinhoRepository>();
-            services.AddScoped<IPersonagemRepository, PersonagemRepository>();
+            services.AddScoped<MarvelHeroesDbContext>();
+            services.AddScoped<IHqRepository, HqRepository>();
+            services.AddScoped<IHeroRepository, HeroRepository>();
             services.AddScoped<IMarvelClient, MarvelClient>();
-            services.AddScoped<IPersonagemIntegracaoRepository, PersonagemIntegracaoRepository>();
-            services.AddScoped<IQuadrinhoIntegracaoRepository, QuadrinhoIntegracaoRepository>();
-            services.AddScoped<IPersonagemService, PersonagemService>();
+            services.AddScoped<IHeroIntegrationRepository, HeroIntegrationRepository>();
+            services.AddScoped<IHqIntegrationRepository, HqIntegrationRepository>();
+            services.AddScoped<IHeroService, HeroService>();
 
-            services.AddScoped<INotificador, Notificador>();
+            services.AddScoped<INotificator, Notificator>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUser, AspNetUser>();

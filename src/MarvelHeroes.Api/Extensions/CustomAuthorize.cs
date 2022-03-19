@@ -8,7 +8,7 @@ namespace MarvelHeroes.Api.Extensions
 {
     public class CustomAuthorization
     {
-        public static bool ValidarClaimsUsuario(HttpContext context, string claimName, string claimValue)
+        public static bool ValidateUserClaims(HttpContext context, string claimName, string claimValue)
         {
             return context.User.Identity.IsAuthenticated &&
                    context.User.Claims.Any(c => c.Type == claimName && c.Value.Contains(claimValue));
@@ -18,17 +18,17 @@ namespace MarvelHeroes.Api.Extensions
 
     public class ClaimsAuthorizeAttribute : TypeFilterAttribute
     {
-        public ClaimsAuthorizeAttribute(string claimName, string claimValue) : base(typeof(RequisitoClaimFilter))
+        public ClaimsAuthorizeAttribute(string claimName, string claimValue) : base(typeof(RequierdClaimFilter))
         {
             Arguments = new object[] { new Claim(claimName, claimValue) };
         }
     }
 
-    public class RequisitoClaimFilter : IAuthorizationFilter
+    public class RequierdClaimFilter : IAuthorizationFilter
     {
         private readonly Claim _claim;
 
-        public RequisitoClaimFilter(Claim claim)
+        public RequierdClaimFilter(Claim claim)
         {
             _claim = claim;
         }
@@ -41,7 +41,7 @@ namespace MarvelHeroes.Api.Extensions
                 return;
             }
 
-            if (!CustomAuthorization.ValidarClaimsUsuario(context.HttpContext, _claim.Type, _claim.Value))
+            if (!CustomAuthorization.ValidateUserClaims(context.HttpContext, _claim.Type, _claim.Value))
             {
                 context.Result = new StatusCodeResult(403);
             }

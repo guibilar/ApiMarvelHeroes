@@ -14,74 +14,74 @@ namespace MarvelHeroes.Integração.Helpers
     public class MarvelClient : IMarvelClient
     {
         private HttpClient _client { get; set; }
-        private string _chavePublica { get; } = Environment.GetEnvironmentVariable("publicKey");
-        private string _chavePrivada { get; } = Environment.GetEnvironmentVariable("privateKey");
+        private string _publicKey { get; } = Environment.GetEnvironmentVariable("publicKey");
+        private string _privateKey { get; } = Environment.GetEnvironmentVariable("privateKey");
 
-        private readonly INotificador _notificador;
+        private readonly INotificator _notificator;
 
-        public MarvelClient(INotificador notificador)
+        public MarvelClient(INotificator notificador)
         {
             _client = new HttpClient();
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _client.BaseAddress = new Uri(Environment.GetEnvironmentVariable("marvelApiUrl"));
-            _notificador = notificador;
+            _notificator = notificador;
         }
 
-        private string CalculaHash(string carimboDeTempo)
+        private string GenerateHash(string carimboDeTempo)
         {
-            byte[] bytes = Encoding.UTF8.GetBytes(carimboDeTempo + _chavePrivada + _chavePublica);
+            byte[] bytes = Encoding.UTF8.GetBytes(carimboDeTempo + _privateKey + _publicKey);
             var gerador = MD5.Create();
             byte[] bytesHash = gerador.ComputeHash(bytes);
 
             return BitConverter.ToString(bytesHash).ToLower().Replace("-", String.Empty);
         }
 
-        public dynamic ObterListagem(string caminho, int limite, int offset)
+        public dynamic GetList(string path, int limit, int offset)
         {
-            string carimboDeTempo = DateTime.Now.Ticks.ToString();
-            HttpResponseMessage response = _client.GetAsync($"{caminho}?ts={carimboDeTempo}&limit={limite}&offset={offset}&apikey={_chavePublica}&hash={CalculaHash(carimboDeTempo)}").Result;
+            string timeStamp = DateTime.Now.Ticks.ToString();
+            HttpResponseMessage response = _client.GetAsync($"{path}?ts={timeStamp}&limit={limit}&offset={offset}&apikey={_publicKey}&hash={GenerateHash(timeStamp)}").Result;
 
-            string conteudo = response.Content.ReadAsStringAsync().Result;
+            string content = response.Content.ReadAsStringAsync().Result;
 
-            object resultado = JsonConvert.DeserializeObject(conteudo);
+            object output = JsonConvert.DeserializeObject(content);
 
-            VerificaException(resultado);
+            Validate(output);
 
-            return resultado;
+            return output;
         }
 
-        public dynamic ObterObjeto(string caminho, int idMarvel)
+        public dynamic GetObject(string path, int idMarvel)
         {
-            string carimboDeTempo = DateTime.Now.Ticks.ToString();
-            HttpResponseMessage response = _client.GetAsync($"{caminho}/{idMarvel}?ts={carimboDeTempo}&apikey={_chavePublica}&hash={CalculaHash(carimboDeTempo)}").Result;
+            string timeStamp = DateTime.Now.Ticks.ToString();
+            HttpResponseMessage response = _client.GetAsync($"{path}/{idMarvel}?ts={timeStamp}&apikey={_publicKey}&hash={GenerateHash(timeStamp)}").Result;
 
-            string conteudo = response.Content.ReadAsStringAsync().Result;
+            string content = response.Content.ReadAsStringAsync().Result;
 
-            object resultado = JsonConvert.DeserializeObject(conteudo);
+            object output = JsonConvert.DeserializeObject(content);
 
-            VerificaException(resultado);
+            Validate(output);
 
-            return resultado;
+            return output;
         }
 
-        private void VerificaException(dynamic resultado)
+        private void Validate(dynamic resultado)
         {
             switch ((int)resultado.code)
             {
                 case 404:
                     {
-                        _notificador.Resolver(new Notificacao(tipo: TipoNotificacao.Aviso, mensagem: "Objeto não encontrado"));
+                        _notificator.Resolve(new Notification(type: NotificationType.Warning, message: "Object not found"));
                         break;
                     }
                 case 401:
                     {
-                        _notificador.Resolver(new Notificacao(tipo: TipoNotificacao.Aviso, mensagem: "Suas credenciais Marvel não são válidas"));
+                        _notificator.Resolve(new Notification(type: NotificationType.Warning, message: "Invalid Marvel Credentials"));
                         break;
                     }
                 case 500:
                     {
-                        _notificador.Resolver(new Notificacao(tipo: TipoNotificacao.Erro, mensagem: "Um erro de integração ocorreu"));
+                        _notificator.Resolve(new Notification(type: NotificationType.Erro, message: "A integration error has occur"));
                         break;
                     }
             }

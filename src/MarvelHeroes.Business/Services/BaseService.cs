@@ -9,33 +9,33 @@ namespace MarvelHeroes.Business.Services
 {
     public abstract class BaseService
     {
-        private readonly INotificador _notificador;
+        private readonly INotificator _notificator;
 
-        protected BaseService(INotificador notificador)
+        protected BaseService(INotificator notificator)
         {
-            _notificador = notificador;
+            _notificator = notificator;
         }
 
-        protected void Notificar(ValidationResult validationResult)
+        protected void Notificate(ValidationResult validationResult)
         {
             foreach (var error in validationResult.Errors)
             {
-                Notificar(TipoNotificacao.Erro, error.ErrorMessage);
+                Notificate(NotificationType.Erro, error.ErrorMessage);
             }
         }
 
-        protected void Notificar(TipoNotificacao tipo, string mensagem)
+        protected void Notificate(NotificationType type, string message)
         {
-            _notificador.Resolver(new Notificacao(tipo, mensagem));
+            _notificator.Resolve(new Notification(type, message));
         }
 
-        protected bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade) where TV : AbstractValidator<TE> where TE : Entity
+        protected bool Validate<TV, TE>(TV validaton, TE entity) where TV : AbstractValidator<TE> where TE : Entity
         {
-            var validator = validacao.Validate(entidade);
+            var validator = validaton.Validate(entity);
 
             if(validator.IsValid) return true;
 
-            Notificar(validator);
+            Notificate(validator);
 
             return false;
         }

@@ -28,7 +28,7 @@ namespace MarvelHeroes.Api.Configuration
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Description = "Insira o token JWT desta maneira: Bearer {seu token}",
+                    Description = "Insert your JWT token: Bearer {your_token}",
                     Name = "Authorization",
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
@@ -99,7 +99,7 @@ namespace MarvelHeroes.Api.Configuration
 
             if (description.IsDeprecated)
             {
-                info.Description += " Esta versão está obsoleta!";
+                info.Description += " This is a deprecated version!";
             }
 
             return info;
